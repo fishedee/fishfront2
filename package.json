@@ -1,0 +1,31 @@
+{
+  "name": "fishfront",
+  "version": "0.0.1",
+  "description": "html front util",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "babel --version && babel src --out-dir .",
+    "watch": "babel --version && babel src --out-dir . --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fishedee/FishFront.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fishedee/FishFront/issues"
+  },
+  "homepage": "https://github.com/fishedee/FishFront#readme",
+  "devDependencies": {
+    "babel-cli": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "babel-preset-stage-0": "^6.1.18"
+  },
+  "dependencies": {
+    "immutable": "^3.7.5",
+    "react": "^0.14.3"
+  }
+}
