@@ -12,9 +12,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = require('react-dom/server');
+var _reactDom = require('react-dom');
 
-var _server2 = _interopRequireDefault(_server);
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _immutable = require('immutable');
 
@@ -45,8 +45,6 @@ var _url = require('../encoding/url');
 var _url2 = _interopRequireDefault(_url);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, "next"); var callThrow = step.bind(null, "throw"); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -212,6 +210,11 @@ var Mvc = (function () {
 			pageOnChange.push(inPageOnChange);
 		}
 	}, {
+		key: 'getRootViewClass',
+		value: function getRootViewClass() {
+			return RootViewClass;
+		}
+	}, {
 		key: 'whenStateChange',
 		value: function whenStateChange() {
 			var state = HistoryJs.getState();
@@ -257,52 +260,22 @@ var Mvc = (function () {
 	}, {
 		key: 'render',
 		value: function render(url) {
-			_model2.default.deserialize(window.__INIT_STATE__);
-			this.rootView = _react2.default.render(_react2.default.createElement(RootViewClass, null), document.getElementById('body'));
-			//加入首页
-			go('/');
-			this.createTop('/', this.pageStackCounter - 1);
-			//加入stateChange
-			HistoryJs.Adapter.bind(window, 'statechange', this.whenStateChange.bind(this));
-			//去往当前页面
-			go(url);
+			_model2.default.deserialize(this, window.__INIT_STATE__);
+			var controller = this.createTop(url, this.pageStackCounter);
+			this.rootView = _reactDom2.default.render(_react2.default.createElement(RootViewClass, { controller: controller }), document.getElementById('body'));
 		}
-	}, {
-		key: 'renderToString',
-		value: (function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(url) {
-				var controller, html, data;
-				return regeneratorRuntime.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								controller = this.createTop(url, this.pageStackCounter - 1);
-								_context.next = 3;
-								return controller.onServerCreateInner();
+		/*
+  render(url){
+  	//加入首页，方便返回
+  	this.go('/');
+  	this.createTop('/',this.pageStackCounter-1);
+  		//建立controller
+  	
+  		//加入stateChange
+  	HistoryJs.Adapter.bind(window,'statechange',this.whenStateChange.bind(this));
+  }
+  */
 
-							case 3:
-								html = _server2.default.renderToString(_react2.default.createElement(RootViewClass, { controller: controller }));
-								_context.next = 6;
-								return controller.onServerDestroyInner();
-
-							case 6:
-								data = _model2.default.serialize(this);
-
-								_model2.default.destroy(this);
-								return _context.abrupt('return', '<div id="body">' + html + '</div>' + '<script>window.__INIT_STATE__=' + data + '</script>');
-
-							case 9:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
-
-			return function renderToString(_x) {
-				return ref.apply(this, arguments);
-			};
-		})()
 	}]);
 
 	return Mvc;

@@ -1,4 +1,5 @@
-import Mvc from 'fishfront/react/mvc';
+import babel from "babel-polyfill";
+import Mvc from 'fishfront/react/react-mvc';
 import Router from './config/router';
 
 var mvc = new Mvc();

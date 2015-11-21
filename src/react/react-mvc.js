@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/server';
+import ReactDOM from 'react-dom';
 import Immutable from 'immutable'
 //FIXME
 //import HistoryJs from 'historyjs/scripts/bundled/html4+html5/native.history.js'
@@ -135,6 +135,9 @@ class Mvc{
 	setOnChange(inPageOnChange){
 		pageOnChange.push(inPageOnChange);
 	}
+	getRootViewClass(){
+		return RootViewClass;
+	}
 	whenStateChange(){
 		var state = HistoryJs.getState();
 		var stateCounter = state.data.counter;
@@ -180,25 +183,22 @@ class Mvc{
 			this.pageOnChange[i]( url );
 	}
 	render(url){
-		Model.deserialize(window.__INIT_STATE__);
-		this.rootView = React.render(<RootViewClass/>,document.getElementById('body'));
-		//加入首页
-		go('/');
+		Model.deserialize(this,window.__INIT_STATE__);
+		var controller = this.createTop(url,this.pageStackCounter);
+		this.rootView = ReactDOM.render(<RootViewClass controller={controller}/>,document.getElementById('body'));
+	}
+	/*
+	render(url){
+		//加入首页，方便返回
+		this.go('/');
 		this.createTop('/',this.pageStackCounter-1);
+
+		//建立controller
+		
+
 		//加入stateChange
 		HistoryJs.Adapter.bind(window,'statechange',this.whenStateChange.bind(this));
-		//去往当前页面
-		go(url);
 	}
-	async renderToString(url){
-		var controller = this.createTop(url,this.pageStackCounter-1);
-		await controller.onServerCreateInner();
-		var html = ReactDOM.renderToString(<RootViewClass controller={controller}/>);
-		await controller.onServerDestroyInner();
-		var data = Model.serialize(this);
-		Model.destroy(this);
-		return '<div id="body">'+html+'</div>'+
-		'<script>window.__INIT_STATE__='+data+'</script>';
-	}
+	*/
 }
 export default Mvc

@@ -9,11 +9,13 @@
   },
   "devDependencies": {
     "babel": "^6.1.18",
-    "babel-cli": "^6.2.0"
+    "babel-cli": "^6.2.0",
+    "webpack": "^1.12.8"
   },
   "scripts": {
-    "start": "node dist/server.js",
-    "watch":"babel --version && babel src --out-dir dist --watch",
+    "start": "node build/server.js",
+    "watch": "babel --version && babel src --out-dir build --watch",
+    "pack":"webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

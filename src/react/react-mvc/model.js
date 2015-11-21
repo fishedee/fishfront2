@@ -52,15 +52,13 @@ function createModel(context,modelName,modelClass){
 		model = modelMap.get(modelName);
 	}else{
 		model = new modelClass();
-		modelMap.set(modelName,model);
-	}
-
-	if( modelsInitData.has(context) ){
-		var modelInitDataMap = modelsInitData.get(context);
-		if( modelInitDataMap.has(modelClass) ){
-			var initData = modelInitDataMap.get(modelClass);
-			model.state = JSON.parse(initData);
+		if( modelsInitData.has(context) ){
+			var modelInitDataMap = modelsInitData.get(context);
+			if( modelInitDataMap.has(modelName) ){
+				model.state = modelInitDataMap.get(modelName);
+			}
 		}
+		modelMap.set(modelName,model);
 	}
 
 	return model;
@@ -75,8 +73,8 @@ function serializeModel(context){
 	if( models.has(context) ){
 		var modelMap = models.get(context);
 		var result = {};
-		for( var i in modelMap ){
-			result[i] = modelMap[i].state;
+		for( var [key,value] of modelMap.entries() ){
+			result[key] = value.state;
 		}
 		return JSON.stringify(result);
 	}else{
@@ -85,7 +83,11 @@ function serializeModel(context){
 }
 
 function deserializeModel(context,result){
-	modelsInitData.set(context,result);
+	var data = new Map();
+	for( var i in result ){
+		data.set(i,result[i]);
+	}
+	modelsInitData.set(context,data);
 }
 
 var Models = {

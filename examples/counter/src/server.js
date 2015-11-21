@@ -1,6 +1,6 @@
 import babel from "babel-polyfill";
 import express from 'express';
-import Mvc from 'fishfront/react/react-mvc';
+import Mvc from 'fishfront/react/react-mvc-server';
 import Router from './config/router';
 
 var app = new express();
