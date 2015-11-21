@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "fishfront": "^0.0.1",
-    "immutable": "^3.7.5",
-    "react": "^0.14.3"
+    "express": "^4.13.3",
+    "fishfront": "^0.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel": "^6.1.18",
+    "babel-cli": "^6.2.0"
+  },
   "scripts": {
+    "start": "node dist/server.js",
+    "watch":"babel --version && babel src --out-dir dist --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
