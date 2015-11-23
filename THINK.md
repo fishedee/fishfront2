@@ -26,3 +26,13 @@ model层在初始化时被全局生成，这样controller也不需要loadModel�
 仍未解决的问题为：
 
 1.router的component没有达成按需加载的能力
+
+#0.3.0
+
+完成按需加载view的能力
+
+仍未解决的问题为：
+
+1.model层的数据虽然不多，但是代码还是很多的，model层的代码不能一次全部拉完，会影响首屏显示时间，需要增加按需加载model层的能力
+
+2.view层的body数据已经纳入react管理，但像header，title这些数据仍然没有纳入react管理，会造成页面title在首次加载时显示不正常。
