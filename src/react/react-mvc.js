@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
-import {Router,Route,IndexRoute} from 'react-router';
+import {Router,Route,IndexRoute,match} from 'react-router';
 import Controller from './react-mvc/controller';
 import Model from './react-mvc/model';
 import View from './react-mvc/view';
@@ -23,7 +23,7 @@ class Mvc{
 	setHistory( history){
 		this.history = history;
 	}
-	render(url){
+	renderInner(){
 		var ModelProvider = Model.Provider;
 		//初始化model
 		var models = Model.create(this.model);
@@ -40,6 +40,13 @@ class Mvc{
 			</ModelProvider>,
 			document.getElementById('body')
 		);
+	}
+	render(url){
+		match({routes:this.route,location:window.location.pathname},(error,redirection,renderProps)=>{
+			console.log(error,redirection,renderProps);
+			this.renderInner();
+		});
+		
 	}
 }
 

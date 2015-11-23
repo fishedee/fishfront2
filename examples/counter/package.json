@@ -10,12 +10,13 @@
   "devDependencies": {
     "babel": "^6.1.18",
     "babel-cli": "^6.2.0",
+    "bundle-loader": "^0.5.4",
     "webpack": "^1.12.8"
   },
   "scripts": {
     "start": "node build/server.js",
     "watch": "babel --version && babel src --out-dir build --watch",
-    "pack":"webpack --watch",
+    "pack": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

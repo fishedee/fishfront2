@@ -70,8 +70,8 @@ var Mvc = (function () {
 			this.history = history;
 		}
 	}, {
-		key: 'render',
-		value: function render(url) {
+		key: 'renderInner',
+		value: function renderInner() {
 			var ModelProvider = _model2.default.Provider;
 			//初始化model
 			var models = _model2.default.create(this.model);
@@ -88,6 +88,16 @@ var Mvc = (function () {
 					this.route
 				)
 			), document.getElementById('body'));
+		}
+	}, {
+		key: 'render',
+		value: function render(url) {
+			var _this = this;
+
+			(0, _reactRouter.match)({ routes: this.route, location: window.location.pathname }, function (error, redirection, renderProps) {
+				console.log(error, redirection, renderProps);
+				_this.renderInner();
+			});
 		}
 	}]);
 
