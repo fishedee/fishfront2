@@ -1,12 +1,7 @@
-import indexView from '../view/indexView';
+import IndexView from '../view/indexView';
 
 export default Controllers.createClass({
-	initialize(){
-		this.loadView(indexView);
-	},
 	render(){
-		return {
-
-		};
+		return <IndexView/>;
 	}
 });

@@ -1,6 +1,6 @@
 {
   "name": "fishfront",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "html front util",
   "main": "lib/index.js",
   "scripts": {
@@ -27,9 +27,11 @@
     "babel-preset-stage-0": "^6.1.18"
   },
   "dependencies": {
+    "history": "^1.13.1",
     "historyjs": "^1.8.0-b2",
     "immutable": "^3.7.5",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "react-router": "^1.0.0"
   }
 }

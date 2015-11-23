@@ -1,101 +1,118 @@
 import Env from '../../runtime/env';
+import React from 'react';
 
 function createClass(proto){
+	if( proto.mixins ){
+		for( var singleMixin of proto.mixins ){
+			for( var methodName in singleMixin ){
+				var methodResult = singleMixin[methodName];
+				if( proto.hasOwnProperty(methodName))
+					continue;
+				proto[methodName] = methodResult;
+			}
+		}
+	}
 	proto.on = function(singleListener){
 		this.__listener.add(singleListener);
 	}
 	proto.off = function(singleListener){
-		this.__listener.delete(singleListener);
+		this.__listener.devare(singleListener);
 	}
-	function result(){
-		this.__state = null;
+	function StoreClass(){
+		this.__state = this.getInitialState(); 
 		this.__listener = new Set();
-		this.__hasTrigger = false;
 		this.__defineSetter__('state',(state)=>{
-			this._state = state;
+			this.__state = state;
 			if( this.__listener.size == 0 )
 				return;
-			if( this.__hasTrigger == true )
-				return;
-			this.__hasTrigger = true;
-			setTimeout(()=>{
-				this.__hasTrigger = false;
-				for( var singleListener of this.__listener ){
-					singleListener();
-				}
-			},0);
+			for( var singleListener of this.__listener ){
+				singleListener();
+			}
 		});
 		this.__defineGetter__('state',()=>{
-			return this._state;
+			return this.__state;
 		});
-		if( this.initialize )
-			this.initialize();
+		for( var methodName in this ){
+			var methodResult = this[methodName];
+			if( typeof methodResult != 'function' )
+				continue;
+			if( methodName == 'getInitialState')
+				continue;
+			if( methodName.substr(0,1) == '_')
+				continue;
+			this[methodName] = methodResult.bind(this);
+		}
 	}
-	result.prototype = proto;
-	return result;
+	StoreClass.prototype = proto;
+	return StoreClass;
 }
 
-var models = new Map();
-var modelsInitData = new Map();
-
-function createModel(context,modelName,modelClass){
-	var modelMap = null;
-	if( models.has(context) ){
-		modelMap = models.get(context);
-	}else{
-		modelMap = new Map();
-		models.set(context,modelMap);
+function createModel(modelConfig){
+	var models = {};
+	for( var i in modelConfig ){
+		var modelClass = modelConfig[i];
+		models[i] = new modelClass();
 	}
+	return models;
+}
 
-	var model = null;
-	if( modelMap.has(modelName) ){
-		model = modelMap.get(modelName);
-	}else{
-		model = new modelClass();
-		if( modelsInitData.has(context) ){
-			var modelInitDataMap = modelsInitData.get(context);
-			if( modelInitDataMap.has(modelName) ){
-				model.state = modelInitDataMap.get(modelName);
+function serializeModel(models){
+	var modelSerialize = {};
+	for( var i in models ){
+		modelSerialize[i] = models[i].state;
+	}
+	return JSON.stringify(modelSerialize);
+}
+
+function deserializeModel(models,modelSerialize){
+	for( var i in models ){
+		if( !modelSerialize.hasOwnProperty(i) )
+			continue;
+		models[i].state = modelSerialize[i];
+	}
+	return models;
+}
+
+var ModelProvider = React.createClass({
+	childContextTypes:{
+        model: React.PropTypes.object.isRequired,
+        serverHandler: React.PropTypes.array
+    },
+	getChildContext(){
+		return {
+			model:this.props.model,
+			serverHandler:this.props.serverHandler
+		}
+	},
+	whenModelChange(){
+		this.setState({});
+	},
+	getInitialState(){
+		if( Env.isInBrowser() ){
+			var models = this.props.model;
+			for( var i in models ){
+				models[i].on(this.whenModelChange);
 			}
 		}
-		modelMap.set(modelName,model);
-	}
-
-	return model;
-}
-
-function destroyModel(context){
-	models.delete(context);
-	modelsInitData.delete(context);
-}
-
-function serializeModel(context){
-	if( models.has(context) ){
-		var modelMap = models.get(context);
-		var result = {};
-		for( var [key,value] of modelMap.entries() ){
-			result[key] = value.state;
+		return {}
+	},
+	componentWillUnmount(){
+		var models = this.props.model;
+		for( var i in models ){
+			models.off(this.whenModelChange);
 		}
-		return JSON.stringify(result);
-	}else{
-		return JSON.stringify({});
+	},
+	render(){
+		return this.props.children;
 	}
-}
-
-function deserializeModel(context,result){
-	var data = new Map();
-	for( var i in result ){
-		data.set(i,result[i]);
-	}
-	modelsInitData.set(context,data);
-}
+});
 
 var Models = {
 	createClass:createClass,
 	create:createModel,
-	destroy:destroyModel,
 	serialize:serializeModel,
 	deserialize:deserializeModel,
+	Provider:ModelProvider,
 };
 
 Env.exportGlobal('Models',Models);

@@ -8,40 +8,16 @@ function createClass(proto){
 	}
 	proto.mixins.push(ImmutableRenderMixin);
 	proto.contextTypes = {
-        controller: React.PropTypes.object.isRequired,
+        history: React.PropTypes.object.isRequired,
     }
-	proto.action = async function(){
-		try{
-			var method = arguments[0];
-			var methodArguments = Array.prototype.slice.call(arguments, 1);
-			var controller = this.context.controller;
-			if( ! method in controller ){
-				console.error("controller has not method "+method);
-				return;
-			}
-			return await controller[method].apply(
-				controller,
-				methodArguments
-			);
-		}catch(e){
-			console.error(e);
-		}
-	}
 	proto.go = function(url){
-		var controller = this.context.controller;
-		controller.getContext().go(url);
+		this.context.history.pushState(null,url);
 	}
 	proto.back = function(){
-		var controller = this.context.controller;
-		controller.getContext().back();
+		this.context.history.goBack();
 	}
 	proto.replace = function(url){
-		var controller = this.context.controller;
-		controller.getContext().replace(url);
-	}
-	proto.reload = function(){
-		var controller = this.context.controller;
-		controller.getContext().reload();
+		this.context.history.replaceState(null,url);
 	}
 	return React.createClass(proto);
 }
