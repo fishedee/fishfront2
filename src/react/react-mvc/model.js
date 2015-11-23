@@ -20,7 +20,7 @@ function createClass(proto){
 			this.__hasTrigger = true;
 			setTimeout(()=>{
 				this.__hasTrigger = false;
-				for( var singleListener of this._listener ){
+				for( var singleListener of this.__listener ){
 					singleListener();
 				}
 			},0);

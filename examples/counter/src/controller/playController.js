@@ -9,7 +9,7 @@ export default Controllers.createClass({
 	asc(){
 		this.counterModel.asc();
 	},
-	dsc(){
+	dec(){
 		this.counterModel.dec();
 	},
 	render(){

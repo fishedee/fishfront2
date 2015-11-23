@@ -24,7 +24,7 @@ function createClass(proto){
 				methodArguments
 			);
 		}catch(e){
-			console.err(e);
+			console.error(e);
 		}
 	}
 	proto.go = function(url){

@@ -9,8 +9,8 @@ export default Views.createClass({
 		return (
 			<div>
 				<div>{this.props.counter}</div>
-				<button onClick={this.asc}>增加</button>
-				<button onClick={this.dec}>减少</button>
+				<button onClick={this.onAsc}>增加</button>
+				<button onClick={this.onDec}>减少</button>
 			</div>
 		);
 	}

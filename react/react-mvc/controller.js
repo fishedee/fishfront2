@@ -87,7 +87,7 @@ function createClass(proto) {
 		this[modelName] = _model2.default.create(this.__context, modelName, modelClass);
 		this.__models.push(modelName);
 		if (_env2.default.isInBrowser()) {
-			this[modelName].on(this._onModelChange);
+			this[modelName].on(this.__onModelChange);
 		}
 	};
 	proto.onServerCreateInner = controllerProto.onServerCreateInner;

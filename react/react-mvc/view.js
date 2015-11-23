@@ -61,7 +61,7 @@ function createClass(proto) {
 						_context.prev = 12;
 						_context.t0 = _context['catch'](0);
 
-						console.err(_context.t0);
+						console.error(_context.t0);
 
 					case 15:
 					case 'end':

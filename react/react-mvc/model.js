@@ -37,7 +37,7 @@ function createClass(proto) {
 				var _iteratorError = undefined;
 
 				try {
-					for (var _iterator = _this._listener[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					for (var _iterator = _this.__listener[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 						var singleListener = _step.value;
 
 						singleListener();
