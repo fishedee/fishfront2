@@ -48,3 +48,12 @@ model层在初始化时被全局生成，这样controller也不需要loadModel�
 1.style层没有纳入首屏react显示管理
 
 2.view层的body数据已经纳入react管理，但像header，title这些数据仍然没有纳入react管理，会造成页面title在首次加载时显示不正常。
+
+#0.4.0
+
+完成style层纳入首屏react显示管理
+
+剩余问题：
+1.isormic fetch，前后端统一的跨域ajax处理
+
+2.view层的body数据已经纳入react管理，但像header，title这些数据仍然没有纳入react管理，会造成页面title在首次加载时显示不正常。
