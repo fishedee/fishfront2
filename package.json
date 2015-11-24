@@ -1,6 +1,6 @@
 {
   "name": "fishfront",
-  "version": "0.3.0",
+  "version": "0.3.5",
   "description": "html front util",
   "main": "lib/index.js",
   "scripts": {

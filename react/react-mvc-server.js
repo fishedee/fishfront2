@@ -58,15 +58,15 @@ var MvcServer = (function (_Mvc) {
 		key: 'renderToString',
 		value: (function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(req, resp) {
-				var ModelProvider, models, routerResult, renderProps, serverHandler, i, data, html;
+				var ModelProvider, model, routerResult, renderProps, serverHandler, i, data, html;
 				return regeneratorRuntime.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								ModelProvider = _model2.default.Provider;
 								//初始化model
+								ModelProvider = _model2.default.Provider;
+								model = new _model2.default.Store();
 
-								models = _model2.default.create(this.model);
 								//寻找路由
 
 								_context.next = 4;
@@ -106,78 +106,79 @@ var MvcServer = (function (_Mvc) {
 								renderProps = routerResult.msg;
 								serverHandler = [];
 
+								console.log(model);
 								_server2.default.renderToString(React.createElement(
 									ModelProvider,
-									{ model: models, serverHandler: serverHandler },
+									{ model: model, serverHandler: serverHandler },
 									React.createElement(_reactRouter.RoutingContext, renderProps)
 								));
 								_context.t0 = regeneratorRuntime.keys(serverHandler);
 
-							case 24:
+							case 25:
 								if ((_context.t1 = _context.t0()).done) {
-									_context.next = 32;
+									_context.next = 33;
 									break;
 								}
 
 								i = _context.t1.value;
 
 								if (serverHandler[i].onServerCreate) {
-									_context.next = 28;
+									_context.next = 29;
 									break;
 								}
 
-								return _context.abrupt('continue', 24);
+								return _context.abrupt('continue', 25);
 
-							case 28:
-								_context.next = 30;
+							case 29:
+								_context.next = 31;
 								return serverHandler[i].onServerCreate();
 
-							case 30:
-								_context.next = 24;
+							case 31:
+								_context.next = 25;
 								break;
 
-							case 32:
-								data = _model2.default.serialize(models);
+							case 33:
+								data = model.serialize();
 								_context.t2 = regeneratorRuntime.keys(serverHandler);
 
-							case 34:
+							case 35:
 								if ((_context.t3 = _context.t2()).done) {
-									_context.next = 42;
+									_context.next = 43;
 									break;
 								}
 
 								i = _context.t3.value;
 
 								if (serverHandler[i].onServerClose) {
-									_context.next = 38;
+									_context.next = 39;
 									break;
 								}
 
-								return _context.abrupt('continue', 34);
+								return _context.abrupt('continue', 35);
 
-							case 38:
-								_context.next = 40;
+							case 39:
+								_context.next = 41;
 								return serverHandler[i].onServerClose();
 
-							case 40:
-								_context.next = 34;
+							case 41:
+								_context.next = 35;
 								break;
 
-							case 42:
-								_context.next = 44;
+							case 43:
+								_context.next = 45;
 								return routerRender(this.route, req.url);
 
-							case 44:
+							case 45:
 								routerResult = _context.sent;
 								renderProps = routerResult.msg;
 								html = _server2.default.renderToString(React.createElement(
 									ModelProvider,
-									{ model: models },
+									{ model: model },
 									React.createElement(_reactRouter.RoutingContext, renderProps)
 								));
 								return _context.abrupt('return', '<div id="body">' + html + '</div>' + '<script>window.__INIT_STATE__=' + data + '</script>');
 
-							case 48:
+							case 49:
 							case 'end':
 								return _context.stop();
 						}

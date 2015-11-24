@@ -1,6 +1,7 @@
 export default Models.createClass({
-	getInitialState(){
-		return 0;
+	name:'counterModel',
+	initialize(){
+		this.state = 0;
 	},
 	async fetch(){
 		this.state = Math.floor(Math.random()*10);

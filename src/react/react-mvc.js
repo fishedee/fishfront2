@@ -11,31 +11,30 @@ import createHashHistory from 'history/lib/createHashHistory';
 class Mvc{
 	constructor(){
 		this.route = null;
-		this.model = null;
 		this.history = 'browser';
 	}
 	setRoute(route){
 		this.route = route;
-	}
-	setModel(model){
-		this.model = model;
 	}
 	setHistory( history){
 		this.history = history;
 	}
 	renderInner(){
 		var ModelProvider = Model.Provider;
+		
 		//初始化model
-		var models = Model.create(this.model);
-		Model.deserialize(models,window.__INIT_STATE__);
+		var model = new Model.Store();
+		model.deserialize(window.__INIT_STATE__);
+
 		//创建history
 		if( this.history == 'hash')
 			var history = createHashHistory();
 		else
 			var history = createBrowserHistory();
+
 		//渲染
 		ReactDOM.render(
-			<ModelProvider model={models}>
+			<ModelProvider model={model}>
 				<Router history={history}>{this.route}</Router>
 			</ModelProvider>,
 			document.getElementById('body')

@@ -11,7 +11,6 @@ app.use(async function(req,resp){
     try{
         var mvcServer = new MvcServer();
         mvcServer.setRoute(Route);
-        mvcServer.setModel(Model);
         var result = await mvcServer.renderToString(req,resp);
         if( result == null )
             return;

@@ -50,7 +50,6 @@ var Mvc = (function () {
 		_classCallCheck(this, Mvc);
 
 		this.route = null;
-		this.model = null;
 		this.history = 'browser';
 	}
 
@@ -58,11 +57,6 @@ var Mvc = (function () {
 		key: 'setRoute',
 		value: function setRoute(route) {
 			this.route = route;
-		}
-	}, {
-		key: 'setModel',
-		value: function setModel(model) {
-			this.model = model;
 		}
 	}, {
 		key: 'setHistory',
@@ -73,15 +67,18 @@ var Mvc = (function () {
 		key: 'renderInner',
 		value: function renderInner() {
 			var ModelProvider = _model2.default.Provider;
+
 			//初始化model
-			var models = _model2.default.create(this.model);
-			_model2.default.deserialize(models, window.__INIT_STATE__);
+			var model = new _model2.default.Store();
+			model.deserialize(window.__INIT_STATE__);
+
 			//创建history
 			if (this.history == 'hash') var history = (0, _createHashHistory2.default)();else var history = (0, _createBrowserHistory2.default)();
+
 			//渲染
 			_reactDom2.default.render(_react2.default.createElement(
 				ModelProvider,
-				{ model: models },
+				{ model: model },
 				_react2.default.createElement(
 					_reactRouter.Router,
 					{ history: history },

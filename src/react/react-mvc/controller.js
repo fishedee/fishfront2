@@ -1,17 +1,25 @@
 import Env from '../../runtime/env';
+import Model from './model';
 
 function createClass(proto){
 	proto.getInitialState = function(){
+		if( this.initialize ){
+			this.initialize();
+		}
 		if( this.context.serverHandler ){
 			this.context.serverHandler.push({
 				onServerCreate:this.onServerCreate,
 				onServerDestroy:this.onServerDestroy,
 			});
 		}
-
-		for( var i in this.context.model )
-			this[i] = this.context.model[i];
 		return {};
+	}
+	proto.loadModel = function(modelClass){
+		var modelInstanse = this.context.model.create(modelClass);
+		this[modelInstanse.name] = modelInstanse;
+	}
+	proto.loadView = function(viewClass){
+		this.__viewClass = viewClass;
 	}
 	proto.componentDidMount = function(){
 		if( this.onCreate )
@@ -20,6 +28,13 @@ function createClass(proto){
 	proto.componentWillUnmount = function(){
 		if( this.onDestroy )
 			this.onDestroy();
+	}
+	proto.renderProps = proto.render;
+	proto.render = function(){
+		var ViewClass = this.__viewClass;
+		var data = this.renderProps();
+		data.children = this.props.children;
+		return (<ViewClass {...data}/>);
 	}
 	proto.contextTypes = {
         model: React.PropTypes.object.isRequired,

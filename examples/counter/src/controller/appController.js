@@ -1,10 +1,10 @@
+import AppView from '../view/appView';
+
 export default Controllers.createClass({
+	initialize(){
+		this.loadView(AppView);
+	},
 	render(){
-		return (
-		<div>
-			<div>Hello App</div>
-			{this.props.children}
-		</div>
-		);
+		return {};
 	}
 });

@@ -21,9 +21,10 @@ function routerRender(router,url){
 
 class MvcServer extends Mvc{
 	async renderToString(req,resp){
-		var ModelProvider = Model.Provider;
 		//初始化model
-		var models = Model.create(this.model);
+		var ModelProvider = Model.Provider;
+		var model = new Model.Store();
+
 		//寻找路由
 		var routerResult = await routerRender(this.route,req.url);
 		if( routerResult.status == 500 ){
@@ -39,8 +40,9 @@ class MvcServer extends Mvc{
 			//初始化数据
 			var renderProps = routerResult.msg;
 			var serverHandler = [];
+			console.log(model);
 			ReactDOM.renderToString(
-				<ModelProvider model={models} serverHandler={serverHandler}>
+				<ModelProvider model={model} serverHandler={serverHandler}>
 					<RoutingContext {...renderProps}/>
 				</ModelProvider>
 			);
@@ -49,17 +51,18 @@ class MvcServer extends Mvc{
 					continue;
 				await serverHandler[i].onServerCreate();
 			}
-			var data = Model.serialize(models);
+			var data = model.serialize();
 			for( var i in serverHandler ){
 				if( !serverHandler[i].onServerClose ) 
 					continue;
 				await serverHandler[i].onServerClose();
 			}
+
 			//渲染
 			var routerResult = await routerRender(this.route,req.url);
 			var renderProps = routerResult.msg;
 			var html = ReactDOM.renderToString(
-				<ModelProvider model={models}>
+				<ModelProvider model={model}>
 					<RoutingContext {...renderProps}/>
 				</ModelProvider>
 			);

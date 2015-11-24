@@ -19,7 +19,7 @@ function createClass(proto){
 		this.__listener.devare(singleListener);
 	}
 	function StoreClass(){
-		this.__state = this.getInitialState(); 
+		this.__state = null;
 		this.__listener = new Set();
 		this.__defineSetter__('state',(state)=>{
 			this.__state = state;
@@ -36,41 +36,52 @@ function createClass(proto){
 			var methodResult = this[methodName];
 			if( typeof methodResult != 'function' )
 				continue;
-			if( methodName == 'getInitialState')
-				continue;
 			if( methodName.substr(0,1) == '_')
 				continue;
 			this[methodName] = methodResult.bind(this);
+		}
+		if( this.initialize ){
+			this.initialize();
 		}
 	}
 	StoreClass.prototype = proto;
 	return StoreClass;
 }
 
-function createModel(modelConfig){
-	var models = {};
-	for( var i in modelConfig ){
-		var modelClass = modelConfig[i];
-		models[i] = new modelClass();
+function Store(){
+	this.initData = {};
+	this.models = {};
+	this.listener = null;
+	this.create = function(modelClass){
+		var name = modelClass.prototype.name;
+		if( this.models.hasOwnProperty(name) ){
+			return this.models[name];
+		}
+		var newModel = new modelClass();
+		if( this.initData.hasOwnProperty(name) ){
+			newModel.state = this.initData[name];
+		}
+		if( this.listener != null )
+			newModel.on(this.listener);
+		this.models[name] = newModel;
+		return newModel;
 	}
-	return models;
-}
-
-function serializeModel(models){
-	var modelSerialize = {};
-	for( var i in models ){
-		modelSerialize[i] = models[i].state;
+	this.serialize = function(){
+		var modelSerialize = {};
+		for( var i in this.models ){
+			modelSerialize[i] = this.models[i].state;
+		}
+		return JSON.stringify(modelSerialize);
 	}
-	return JSON.stringify(modelSerialize);
-}
-
-function deserializeModel(models,modelSerialize){
-	for( var i in models ){
-		if( !modelSerialize.hasOwnProperty(i) )
-			continue;
-		models[i].state = modelSerialize[i];
+	this.deserialize = function(data){
+		this.initData = data;
 	}
-	return models;
+	this.on = function(listener){
+		this.listener = listener;
+	}
+	this.off = function(listener){
+		this.listener = null;
+	}
 }
 
 var ModelProvider = React.createClass({
@@ -89,18 +100,11 @@ var ModelProvider = React.createClass({
 	},
 	getInitialState(){
 		if( Env.isInBrowser() ){
-			var models = this.props.model;
-			for( var i in models ){
-				models[i].on(this.whenModelChange);
-			}
+			this.props.model.on(this.whenModelChange);
 		}
 		return {}
 	},
 	componentWillUnmount(){
-		var models = this.props.model;
-		for( var i in models ){
-			models.off(this.whenModelChange);
-		}
 	},
 	render(){
 		return this.props.children;
@@ -109,9 +113,7 @@ var ModelProvider = React.createClass({
 
 var Models = {
 	createClass:createClass,
-	create:createModel,
-	serialize:serializeModel,
-	deserialize:deserializeModel,
+	Store:Store,
 	Provider:ModelProvider,
 };
 
