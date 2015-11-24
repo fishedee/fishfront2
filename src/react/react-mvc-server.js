@@ -2,6 +2,7 @@ import {Mvc,Router,Route,IndexRoute} from './react-mvc';
 import Model from './react-mvc/model';
 import ReactDOM from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
+import StyleSheet from './react-style';
 
 function routerRender(router,url){
 	return new Promise((resolve,reject)=>{
@@ -40,7 +41,6 @@ class MvcServer extends Mvc{
 			//初始化数据
 			var renderProps = routerResult.msg;
 			var serverHandler = [];
-			console.log(model);
 			ReactDOM.renderToString(
 				<ModelProvider model={model} serverHandler={serverHandler}>
 					<RoutingContext {...renderProps}/>
@@ -66,8 +66,15 @@ class MvcServer extends Mvc{
 					<RoutingContext {...renderProps}/>
 				</ModelProvider>
 			);
-			return '<div id="body">'+html+'</div>'+
-				'<script>window.__INIT_STATE__='+data+'</script>';
+
+			//生成stylesheet
+			var style = StyleSheet.renderToString(html);
+
+			return (
+				style+
+				'<div id="body">'+html+'</div>'+
+				'<script>window.__INIT_STATE__='+data+'</script>'
+			);
 		}
 	}
 }

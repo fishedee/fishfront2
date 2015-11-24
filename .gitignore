@@ -3,3 +3,4 @@ runtime/*
 react/*
 encoding/*
 runtime/*
+crypto/*

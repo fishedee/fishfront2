@@ -2,11 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 import {Router,Route,IndexRoute,match} from 'react-router';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+import createHashHistory from 'history/lib/createHashHistory';
+import StyleSheet from './react-style';
 import Controller from './react-mvc/controller';
 import Model from './react-mvc/model';
 import View from './react-mvc/view';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
-import createHashHistory from 'history/lib/createHashHistory';
+
 
 class Mvc{
 	constructor(){
