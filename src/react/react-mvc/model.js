@@ -18,7 +18,14 @@ function createClass(proto){
 	proto.off = function(singleListener){
 		this.__listener.devare(singleListener);
 	}
+	proto.getServerRequest = function(){
+		return this.__serverRequest;
+	}
+	proto.setServerRequest = function(serverRequest){
+		this.__serverRequest = serverRequest;
+	}
 	function StoreClass(){
+		this.__serverRequest = null;
 		this.__state = null;
 		this.__listener = new Set();
 		this.__defineSetter__('state',(state)=>{
@@ -51,6 +58,7 @@ function createClass(proto){
 function Store(){
 	this.initData = {};
 	this.models = {};
+	this.serverRequest = null;
 	this.listener = null;
 	this.create = function(modelClass){
 		var name = modelClass.prototype.name;
@@ -58,6 +66,7 @@ function Store(){
 			return this.models[name];
 		}
 		var newModel = new modelClass();
+		newModel.setServerRequest( this.getServerRequest() );
 		if( this.initData.hasOwnProperty(name) ){
 			newModel.state = this.initData[name];
 		}
@@ -65,6 +74,12 @@ function Store(){
 			newModel.on(this.listener);
 		this.models[name] = newModel;
 		return newModel;
+	}
+	this.setServerRequest = function(serverRequest){
+		this.serverRequest = serverRequest;
+	}
+	this.getServerRequest = function(){
+		return this.serverRequest;
 	}
 	this.serialize = function(){
 		var modelSerialize = {};

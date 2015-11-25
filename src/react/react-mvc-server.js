@@ -38,6 +38,7 @@ class MvcServer extends Mvc{
 			//首次渲染获取数据
 			var ModelProvider = Model.Provider;
 			var model = new Model.Store();
+			model.setServerRequest(req);
 
 			var renderProps = routerResult.msg;
 			var serverHandler = [];

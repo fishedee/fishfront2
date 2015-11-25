@@ -21,6 +21,10 @@ function createClass(proto){
 	proto.loadView = function(viewClass){
 		this.__viewClass = viewClass;
 	}
+	proto.getLocation = function(index){
+		var location = this.props.location;
+		return location.pathname + location.search;
+	}
 	proto.componentDidMount = function(){
 		if( this.onCreate )
 			this.onCreate();

@@ -71,3 +71,17 @@ fetch经过仔细思考后确认以model的mixin方式来引入，这样对用�
 2.model层加入获取server端的request的能力，以及多mixin的initialize合并操作
 
 3.整体client包的大小评估，去除多余模块
+
+4.加快webpack的编译效率以及易用性
+
+5.提供可选的mvc-polyfill
+
+#0.5.5
+解决controller的获取location的接口，以及model层获取serverRequest的接口
+
+剩余问题
+1.整体client包的大小评估，去除多余模块
+
+2.加快webpack的编译效率以及易用性
+
+3.提供可选的mvc-polyfill，目标是IE8（包含且以上）的兼容性
