@@ -47,7 +47,6 @@ class Mvc{
 			console.log(error,redirection,renderProps);
 			this.renderInner();
 		});
-		
 	}
 }
 

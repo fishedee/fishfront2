@@ -3,6 +3,7 @@ import Model from './react-mvc/model';
 import ReactDOM from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
 import StyleSheet from './react-style';
+import DocumentHead from './react-document-head-provider';
 
 function routerRender(router,url){
 	return new Promise((resolve,reject)=>{
@@ -22,10 +23,6 @@ function routerRender(router,url){
 
 class MvcServer extends Mvc{
 	async renderToString(req,resp){
-		//初始化model
-		var ModelProvider = Model.Provider;
-		var model = new Model.Store();
-
 		//寻找路由
 		var routerResult = await routerRender(this.route,req.url);
 		if( routerResult.status == 500 ){
@@ -38,7 +35,10 @@ class MvcServer extends Mvc{
 			resp.status(404).send(routerResult.msg);
 			return null;
 		}else{
-			//初始化数据
+			//首次渲染获取数据
+			var ModelProvider = Model.Provider;
+			var model = new Model.Store();
+
 			var renderProps = routerResult.msg;
 			var serverHandler = [];
 			ReactDOM.renderToString(
@@ -58,27 +58,57 @@ class MvcServer extends Mvc{
 				await serverHandler[i].onServerClose();
 			}
 
-			//渲染
+			//二次渲染获取html
+			var DocumentHeadProvider = DocumentHead.Provider;
+			var documentHead = new DocumentHead.DocumentHead();
+
 			var routerResult = await routerRender(this.route,req.url);
 			var renderProps = routerResult.msg;
 			var html = ReactDOM.renderToString(
-				<ModelProvider model={model}>
-					<RoutingContext {...renderProps}/>
-				</ModelProvider>
+				<DocumentHeadProvider documentHead={documentHead}>
+					<ModelProvider model={model}>
+						<RoutingContext {...renderProps}/>
+					</ModelProvider>
+				</DocumentHeadProvider>
 			);
 
 			//生成stylesheet
 			var style = StyleSheet.renderToString(html);
 
-			return (
-				style+
-				'<div id="body">'+html+'</div>'+
-				'<script>window.__INIT_STATE__='+data+'</script>'
-			);
+			var result = (
+`<!DOCTYPE>
+<html>
+    <head>
+       	${documentHead.renderMetaString()}
+       	${documentHead.renderTitleString()}
+       	${documentHead.renderBaseString()}
+       	${documentHead.renderLinkString()}
+       	${style}
+    </head>
+    <body>
+        <div id="body">${html}</div>
+        <div id="dialog"></div>
+        <script>window.__INIT_STATE__=${data}</script>
+        ${documentHead.renderScriptString()}
+    </body>
+</html>
+`
+);
+			resp.send(result);
 		}
+	}
+	getMiddleware(){
+		var self = this;
+		var middleware = async (req,resp,next)=>{
+			try{
+		        await self.renderToString(req,resp);
+		    }catch(e){
+		        resp.status(500).send('nodejs server error');
+		        console.error(e.stack);
+		    }
+		}
+		return middleware.bind(this);
 	}
 }
 
-export {
-	MvcServer as MvcServer
-}
+export default MvcServer;

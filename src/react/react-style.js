@@ -114,10 +114,7 @@ function initStyle(){
 	if( !styleTag )
 		return;
 	for( var i = 0 ; i != styleTag.length ; ++i ){
-		console.log(i);
-		console.log(styleTag.length);
 		var singleStyleTag = styleTag[i];
-		console.log(singleStyleTag);
 		var allClass = singleStyleTag.getAttribute('class');
 		if( !allClass ){
 			continue;

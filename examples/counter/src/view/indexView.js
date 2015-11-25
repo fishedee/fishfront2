@@ -1,3 +1,5 @@
+import DocumentHead from 'fishfront/react/react-document-head';
+
 var style = StyleSheet.create({
 	body:{
 		background:'yellow',
@@ -15,6 +17,7 @@ export default Views.createClass({
 	render(){
 		return (
 			<div className={style.body}>
+				<DocumentHead title={"首页"}/>
 				<button className={style.button} onClick={this.onClick}>点击开始游戏</button>
 			</div>
 		);
