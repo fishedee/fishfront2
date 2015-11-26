@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 module.exports = {
     context:__dirname,
-    entry: './build/client.js',
+    entry: './src/client.js',
     output: {
         path:__dirname,
         publicPath: '/',
@@ -10,8 +10,9 @@ module.exports = {
     },
     module:{
         loaders: [
+            { test: /\.js$/ , exclude:/node_modules/,loader:"babel?cacheDirectory"},
             { test: /\.css$/, loader: "style!css" },
-            { test: /Controller\.js$/, loader: "bundle?lazy" }
+            { test: /Controller\.js$/, loader: "bundle?lazy!babel?cacheDirectory" }
         ]
     },
     resolve: {

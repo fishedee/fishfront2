@@ -100,3 +100,9 @@ webpack的编译效率是通过加入module.noParse和resolve的alias
 
 2.提供可选的mvc-polyfill，目标是IE8（包含且以上）的兼容性
 
+#0.6.1
+
+超加速webpack的编译效率，爽爽哒，而且只需要开单个窗口噢
+
+剩余问题：
+1.提供可选的mvc-polyfill，目标是IE8（包含且以上）的兼容性

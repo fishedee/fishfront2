@@ -21,8 +21,7 @@
   "scripts": {
     "start": "node build/server.js",
     "babel":"babel --version && babel src --out-dir build --watch",
-    "watch": "node build/server",
-    "pack":"webpack",
+    "watch": "node src/server-bridge",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
