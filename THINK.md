@@ -85,3 +85,18 @@ fetch经过仔细思考后确认以model的mixin方式来引入，这样对用�
 2.加快webpack的编译效率以及易用性
 
 3.提供可选的mvc-polyfill，目标是IE8（包含且以上）的兼容性
+
+#0.6.0
+
+基础框架的原始大小是1.13mb，使用min版本后是307kb，gzip压缩后是87kb，client包的大小基本上是符合要求的。
+
+webpack的编译效率是通过加入module.noParse和resolve的alias
+
+同时使用webpack-dev-middleware以及nodejs的强制reload的能力，基本达成了快速debug编译的性能
+
+剩余问题：
+
+1.前端开发时需要开两个窗口，babel watch，以及后端服务器的watch
+
+2.提供可选的mvc-polyfill，目标是IE8（包含且以上）的兼容性
+

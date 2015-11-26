@@ -10,13 +10,19 @@
   "devDependencies": {
     "babel": "^6.1.18",
     "babel-cli": "^6.2.0",
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "babel-preset-stage-0": "^6.1.18",
     "bundle-loader": "^0.5.4",
     "webpack": "^1.12.8"
   },
   "scripts": {
     "start": "node build/server.js",
-    "watch": "babel --version && babel src --out-dir build --watch",
-    "pack": "webpack --watch",
+    "babel":"babel --version && babel src --out-dir build --watch",
+    "watch": "node build/server",
+    "pack":"webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -5,6 +5,12 @@ import { match, RoutingContext } from 'react-router';
 import StyleSheet from './react-style';
 import DocumentHead from './react-document-head-provider';
 
+import Express from 'express';
+import Compress from 'compression';
+import Webpack from 'webpack';
+import WebpackMiddleware from '../webpack/webpack-dev-middleware';
+import RequireReload from '../runtime/reload';
+
 function routerRender(router,url){
 	return new Promise((resolve,reject)=>{
 		match({routes:router,location:url},(error,redirectLocation,renderProps)=>{
@@ -22,9 +28,25 @@ function routerRender(router,url){
 }
 
 class MvcServer extends Mvc{
+	construcotr(){
+		super.construcotr();
+		this.routeInstance = null;
+		this.webpackConfig = null;
+		this.development = true;
+		this.port = 1616;
+	}
+	setWebPackConfig(webpackConfig){
+		this.webpackConfig = webpackConfig;
+	}
+	setPort(port){
+		this.port = port;
+	}
+	setDevelopment(development){
+		this.development = development;
+	}
 	async renderToString(req,resp){
 		//寻找路由
-		var routerResult = await routerRender(this.route,req.url);
+		var routerResult = await routerRender(this.routeInstance,req.url);
 		if( routerResult.status == 500 ){
 			resp.status(500).send(routerResult.msg);
 			return null;
@@ -63,7 +85,7 @@ class MvcServer extends Mvc{
 			var DocumentHeadProvider = DocumentHead.Provider;
 			var documentHead = new DocumentHead.DocumentHead();
 
-			var routerResult = await routerRender(this.route,req.url);
+			var routerResult = await routerRender(this.routeInstance,req.url);
 			var renderProps = routerResult.msg;
 			var html = ReactDOM.renderToString(
 				<DocumentHeadProvider documentHead={documentHead}>
@@ -109,6 +131,40 @@ class MvcServer extends Mvc{
 		    }
 		}
 		return middleware.bind(this);
+	}
+	run(){
+		var self = this;
+		var requireReload = RequireReload(require,{noLibrary:true});
+		var app = new Express();
+		var port = this.port;
+		var compiler = Webpack(this.webpackConfig);
+		app.use(Compress());
+		app.set('etag',true);
+		app.set('etag','strong');
+		app.use(WebpackMiddleware(compiler,{
+			hot:true,
+			stats: {
+				colors: true
+			}
+		}));
+		app.use(async (req,resp,next)=>{
+			try{
+				var routeInstance = requireReload(self.route);
+				routeInstance = routeInstance && routeInstance.__esModule ? routeInstance : { default: routeInstance }; 
+				self.routeInstance = routeInstance.default;
+				await self.renderToString(req,resp,next);
+			}catch(e){
+				resp.status(500).send('nodejs server error');
+		        console.error(e.stack);
+			}
+		});
+		app.listen(port, function(error) {
+		  	if (error) {
+		    	console.error(error);
+		  	}else{
+		    	console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port);
+		  	}
+		});
 	}
 }
 

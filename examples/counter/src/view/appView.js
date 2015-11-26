@@ -23,7 +23,7 @@ export default Views.createClass({
 						{src:"/bundle.js"}
 					]}
 				/>
-				<div className={style.text}>Hello App</div>
+				<div className={style.text}>Hello App22</div>
 				{this.props.children}
 			</div>
 		);

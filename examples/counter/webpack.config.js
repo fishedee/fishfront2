@@ -1,9 +1,11 @@
 var webpack = require('webpack');
 
 module.exports = {
+    context:__dirname,
     entry: './build/client.js',
     output: {
-        path:'dist',
+        path:__dirname,
+        publicPath: '/',
         filename: 'bundle.js'       
     },
     module:{
@@ -15,5 +17,7 @@ module.exports = {
     resolve: {
         extensions: ['','.js']
     },
-    plugins:[]
+    plugins:[
+        new webpack.OldWatchingPlugin()
+    ]
 };
