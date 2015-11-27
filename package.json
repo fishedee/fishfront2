@@ -1,6 +1,6 @@
 {
   "name": "fishfront",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "html front util",
   "main": "lib/index.js",
   "scripts": {
@@ -19,6 +19,13 @@
     "url": "https://github.com/fishedee/FishFront/issues"
   },
   "homepage": "https://github.com/fishedee/FishFront#readme",
+  "files":[
+  	"react",
+	"crypto",
+	"encoding",
+	"webpack",
+	"runtime"
+  ],
   "devDependencies": {
     "babel-cli": "^6.2.0",
     "babel-core": "^6.2.1",
