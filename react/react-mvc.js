@@ -21,11 +21,11 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 var _reactRouter = require('react-router');
 
-var _createBrowserHistory = 2;
+var _createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-var _createHashHistory = 1;
+var _createHashHistory = require('history/lib/createHashHistory');
 
 var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
 

@@ -1,6 +1,6 @@
 {
   "name": "fishfront",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "html front util",
   "main": "react/react-mvc.js",
   "scripts": {
