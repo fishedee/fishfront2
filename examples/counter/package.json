@@ -3,20 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.13.3",
-    "fishfront": "^0.0.1"
-  },
   "devDependencies": {
-    "babel": "^6.1.18",
-    "babel-cli": "^6.2.0",
-    "babel-core": "^6.2.1",
-    "babel-loader": "^6.2.0",
-    "babel-preset-es2015": "^6.1.18",
-    "babel-preset-react": "^6.1.18",
-    "babel-preset-stage-0": "^6.1.18",
-    "bundle-loader": "^0.5.4",
-    "webpack": "^1.12.8"
+    "bundle-loader": "^0.5.4"
   },
   "scripts": {
     "start": "node build/server.js",
