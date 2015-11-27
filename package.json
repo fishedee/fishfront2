@@ -1,13 +1,14 @@
 {
   "name": "fishfront",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "description": "html front util",
   "main": "react/react-mvc.js",
   "scripts": {
     "start": "babel --version && babel src --out-dir .",
     "watch": "babel --version && babel src --out-dir . --watch",
     "release": "babel --version && rm -rf react* encoding* && babel src --out-dir .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish":"npm run release && rm -rf node_modules/"
   },
   "repository": {
     "type": "git",
