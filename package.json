@@ -22,7 +22,6 @@
   "devDependencies": {
   },
   "peerDependencies": {
-  	//library
     "compression": "^1.6.0",
     "express": "^4.13.3",
     "memory-fs": "^0.3.0",
@@ -34,7 +33,7 @@
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-router": "^1.0.0",
-	//dev util
+
     "webpack": "^1.12.9",
     "babel-cli": "^6.2.0",
     "babel-core": "^6.2.1",
