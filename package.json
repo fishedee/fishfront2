@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel --version && babel src --out-dir .",
     "watch": "babel --version && babel src --out-dir . --watch",
-    "release": "babel --version && rm -rf react* encoding* && babel src --out-dir . && mv node_modules node_modules_temp",
+    "release": "babel --version && rm -rf react* encoding* crypto* runtime* webpack* && babel src --out-dir . && mv node_modules node_modules_temp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
