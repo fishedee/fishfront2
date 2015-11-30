@@ -110,3 +110,6 @@ webpack的编译效率是通过加入module.noParse和resolve的alias
 #0.7.0
 修复model层的序列与反序列化没有接入immutable的问题，以及todo sample
 
+#0.7.1
+增加前后端统一fetch的mixins
+
