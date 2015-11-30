@@ -1,12 +1,12 @@
 {
   "name": "fishfront",
-  "version": "0.6.14",
+  "version": "0.7.0",
   "description": "html front util",
   "main": "react/react-mvc.js",
   "scripts": {
     "start": "babel --version && babel src --out-dir .",
     "watch": "babel --version && babel src --out-dir . --watch",
-    "release": "babel --version && rm -rf react* encoding* crypto* runtime* webpack* && babel src --out-dir . && mv node_modules ../ && npm publish && mv ../node_modules .",
+    "release": "babel --version && rm -rf react* encoding* crypto* runtime* webpack* && babel src --out-dir . && mv node_modules ../ ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -8,11 +8,17 @@ var _env = require('../../runtime/env');
 
 var _env2 = _interopRequireDefault(_env);
 
+var _immutable = require('immutable');
+
+var _immutable2 = _interopRequireDefault(_immutable);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 function createClass(proto) {
 	if (proto.mixins) {
@@ -121,7 +127,11 @@ function Store() {
 		var newModel = new modelClass();
 		newModel.setServerRequest(this.getServerRequest());
 		if (this.initData.hasOwnProperty(name)) {
-			newModel.state = this.initData[name];
+			var state = this.initData[name];
+			if ((typeof state === 'undefined' ? 'undefined' : _typeof(state)) == 'object') {
+				state = _immutable2.default.fromJS(state);
+			}
+			newModel.state = state;
 		}
 		if (this.listener != null) newModel.on(this.listener);
 		this.models[name] = newModel;
@@ -136,7 +146,11 @@ function Store() {
 	this.serialize = function () {
 		var modelSerialize = {};
 		for (var i in this.models) {
-			modelSerialize[i] = this.models[i].state;
+			var state = this.models[i].state;
+			if ((typeof state === 'undefined' ? 'undefined' : _typeof(state)) == 'object') {
+				state = state.toJS();
+			}
+			modelSerialize[i] = state;
 		}
 		return JSON.stringify(modelSerialize);
 	};

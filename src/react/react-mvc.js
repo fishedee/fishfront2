@@ -44,7 +44,6 @@ class Mvc{
 	}
 	render(url){
 		match({routes:this.route,location:window.location.pathname},(error,redirection,renderProps)=>{
-			console.log(error,redirection,renderProps);
 			this.renderInner();
 		});
 	}

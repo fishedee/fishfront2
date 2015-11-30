@@ -106,3 +106,7 @@ webpack的编译效率是通过加入module.noParse和resolve的alias
 
 剩余问题：
 1.提供可选的mvc-polyfill，目标是IE8（包含且以上）的兼容性
+
+#0.7.0
+修复model层的序列与反序列化没有接入immutable的问题，以及todo sample
+

@@ -96,7 +96,6 @@ var Mvc = (function () {
 			var _this = this;
 
 			(0, _reactRouter.match)({ routes: this.route, location: window.location.pathname }, function (error, redirection, renderProps) {
-				console.log(error, redirection, renderProps);
 				_this.renderInner();
 			});
 		}

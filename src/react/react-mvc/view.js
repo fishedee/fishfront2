@@ -1,4 +1,5 @@
 import ImmutableRenderMixin from '../react-immutable-render-mixin';
+import Immutable from 'immutable';
 import React from 'react';
 import Env from '../../runtime/env';
 
@@ -28,4 +29,5 @@ var Views = {
 
 Env.exportGlobal('Views',Views);
 Env.exportGlobal('React',React);
+Env.exportGlobal('Immutable',Immutable);
 export default Views;

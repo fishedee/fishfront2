@@ -1,4 +1,5 @@
 import Env from '../../runtime/env';
+import Immutable from 'immutable';
 import React from 'react';
 
 function createClass(proto){
@@ -68,7 +69,11 @@ function Store(){
 		var newModel = new modelClass();
 		newModel.setServerRequest( this.getServerRequest() );
 		if( this.initData.hasOwnProperty(name) ){
-			newModel.state = this.initData[name];
+			var state = this.initData[name];
+			if( typeof state == 'object'){
+				state = Immutable.fromJS(state);
+			}
+			newModel.state = state;
 		}
 		if( this.listener != null )
 			newModel.on(this.listener);
@@ -84,7 +89,11 @@ function Store(){
 	this.serialize = function(){
 		var modelSerialize = {};
 		for( var i in this.models ){
-			modelSerialize[i] = this.models[i].state;
+			var state = this.models[i].state;
+			if( typeof state == 'object'){
+				state = state.toJS();
+			}
+			modelSerialize[i] = state;
 		}
 		return JSON.stringify(modelSerialize);
 	}

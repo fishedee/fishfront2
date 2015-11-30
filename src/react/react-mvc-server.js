@@ -32,6 +32,7 @@ class MvcServer extends Mvc{
 		super.construcotr();
 		this.routeInstance = null;
 		this.webpackConfig = null;
+		this.staticDir = null;
 		this.development = true;
 		this.port = 1616;
 	}
@@ -43,6 +44,9 @@ class MvcServer extends Mvc{
 	}
 	setDevelopment(development){
 		this.development = development;
+	}
+	setStaticDir(staticDir){
+		this.staticDir = staticDir;
 	}
 	async renderToString(req,resp){
 		//寻找路由
@@ -110,7 +114,6 @@ class MvcServer extends Mvc{
     </head>
     <body>
         <div id="body">${html}</div>
-        <div id="dialog"></div>
         <script>window.__INIT_STATE__=${data}</script>
         ${documentHead.renderScriptString()}
     </body>
@@ -141,6 +144,9 @@ class MvcServer extends Mvc{
 		app.use(Compress());
 		app.set('etag',true);
 		app.set('etag','strong');
+		if( this.staticDir ){
+			app.use(Express.static(this.staticDir));
+		}
 		app.use(WebpackMiddleware(compiler,{
 			hot:true,
 			stats: {

@@ -8,6 +8,10 @@ var _reactImmutableRenderMixin = require('../react-immutable-render-mixin');
 
 var _reactImmutableRenderMixin2 = _interopRequireDefault(_reactImmutableRenderMixin);
 
+var _immutable = require('immutable');
+
+var _immutable2 = _interopRequireDefault(_immutable);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -44,4 +48,5 @@ var Views = {
 
 _env2.default.exportGlobal('Views', Views);
 _env2.default.exportGlobal('React', _react2.default);
+_env2.default.exportGlobal('Immutable', _immutable2.default);
 exports.default = Views;

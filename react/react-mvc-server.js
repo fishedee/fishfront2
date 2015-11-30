@@ -89,6 +89,7 @@ var MvcServer = (function (_Mvc) {
 			_get(Object.getPrototypeOf(MvcServer.prototype), 'construcotr', this).call(this);
 			this.routeInstance = null;
 			this.webpackConfig = null;
+			this.staticDir = null;
 			this.development = true;
 			this.port = 1616;
 		}
@@ -106,6 +107,11 @@ var MvcServer = (function (_Mvc) {
 		key: 'setDevelopment',
 		value: function setDevelopment(development) {
 			this.development = development;
+		}
+	}, {
+		key: 'setStaticDir',
+		value: function setStaticDir(staticDir) {
+			this.staticDir = staticDir;
 		}
 	}, {
 		key: 'renderToString',
@@ -239,7 +245,7 @@ var MvcServer = (function (_Mvc) {
 								//生成stylesheet
 
 								style = _reactStyle2.default.renderToString(html);
-								result = '<!DOCTYPE>\n<html>\n    <head>\n       \t' + documentHead.renderMetaString() + '\n       \t' + documentHead.renderTitleString() + '\n       \t' + documentHead.renderBaseString() + '\n       \t' + documentHead.renderLinkString() + '\n       \t' + style + '\n    </head>\n    <body>\n        <div id="body">' + html + '</div>\n        <div id="dialog"></div>\n        <script>window.__INIT_STATE__=' + data + '</script>\n        ' + documentHead.renderScriptString() + '\n    </body>\n</html>\n';
+								result = '<!DOCTYPE>\n<html>\n    <head>\n       \t' + documentHead.renderMetaString() + '\n       \t' + documentHead.renderTitleString() + '\n       \t' + documentHead.renderBaseString() + '\n       \t' + documentHead.renderLinkString() + '\n       \t' + style + '\n    </head>\n    <body>\n        <div id="body">' + html + '</div>\n        <script>window.__INIT_STATE__=' + data + '</script>\n        ' + documentHead.renderScriptString() + '\n    </body>\n</html>\n';
 
 								resp.send(result);
 
@@ -307,6 +313,9 @@ var MvcServer = (function (_Mvc) {
 			app.use((0, _compression2.default)());
 			app.set('etag', true);
 			app.set('etag', 'strong');
+			if (this.staticDir) {
+				app.use(_express2.default.static(this.staticDir));
+			}
 			app.use((0, _webpackDevMiddleware2.default)(compiler, {
 				hot: true,
 				stats: {
